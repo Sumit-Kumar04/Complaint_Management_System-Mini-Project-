@@ -1,0 +1,77 @@
+<div class="row g-4 mt-3">
+  <div class="col-md-4">
+    <div class="card p-3 text-center">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="90" class="mx-auto" alt="User Avatar">
+      <h5 class="mt-3"><%=user.name%></h5>
+      <p class="text-muted mb-1">User ID: <%=user._id%></p>
+      <p class="text-muted mb-0"><i class="bi bi-telephone"></i> +91 <%=user.phone%></p>
+      <form action="/user/<%=user._id%>/edit">
+      <button class="btn btn-outline-primary btn-sm mt-3">Edit Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="col-md-8">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="card text-center p-3 bg-light">
+          <h6 class="text-muted">Active</h6>
+          <h2 class="fw-bold text-primary">5</h2>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center p-3 bg-light">
+          <h6 class="text-muted">Resolved</h6>
+          <h2 class="fw-bold text-success">8</h2>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center p-3 bg-light">
+          <h6 class="text-muted">Pending</h6>
+          <h2 class="fw-bold text-warning">2</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complaint History -->
+    <div class="card mt-4">
+      <div class="card-header bg-primary text-white">
+        Recent Complaints
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Subject</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#101</td>
+              <td>Streetlight not working</td>
+              <td><span class="badge bg-warning">Pending</span></td>
+              <td>12 Oct 2025</td>
+            </tr>
+            <tr>
+              <td>#102</td>
+              <td>Garbage not collected</td>
+              <td><span class="badge bg-success">Resolved</span></td>
+              <td>10 Oct 2025</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- New Complaint -->
+    <div class="text-end mt-4">
+      <a href="#" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Register New Complaint
+      </a>
+    </div>
+  </div>
+</div>
