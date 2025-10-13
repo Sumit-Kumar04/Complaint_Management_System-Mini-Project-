@@ -96,11 +96,21 @@ app.get("/user/:id/complaint/new", async (req, res) => {
 });
 
 //post route to register new complaint
-// app.post("/user/:id/complaint/new",async(req,res)=>{
-//   const userId=req.params.id;
-//   const user = await User.findById(userId);
+app.post("/user/:id/complaint/new",async(req,res)=>{
+  const userId=req.params.id;
+  const {subject, description, location, category } = req.body;
+  const newComplaint = new Complaint({
+    user: userId,
+    subject,
+    description,
+    location,
+    category,
+    status: "Pending",
+  });
+  await newComplaint.save();
+  res.redirect(`/user/dashboard/${userId}`);
 
-// });
+});
 
 
 // Start server

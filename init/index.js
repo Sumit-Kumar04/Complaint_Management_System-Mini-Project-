@@ -25,10 +25,10 @@ const initDB=async()=>{
     ]);
 
     await Complaint.insertMany([
-      { user: users[0]._id, subject: "Streetlight not working", description: "The streetlight near my house is not functioning.", status: "Pending" },
-      { user: users[0]._id, subject: "Garbage not collected", description: "Garbage collection hasn’t come for 2 days.", status: "Resolved" },
-      { user: users[1]._id, subject: "Water leakage", description: "There is a water leak near the road.", status: "Active" },
-      { user: users[2]._id, subject: "Road damaged", description: "The road near market is broken.", status: "Pending" }
+      { user: users[0]._id, subject: "Streetlight not working", description: "The streetlight near my house is not functioning.",location:"Mathura,UP",category:"Sanitation",status: "Pending" },
+      { user: users[0]._id, subject: "Garbage not collected", description: "Garbage collection hasn’t come for 2 days.",location:"Agra,UP" ,category:"Water Supply",status: "Resolved" },
+      { user: users[1]._id, subject: "Water leakage", description: "There is a water leak near the road.",location:"Navi Mumbai" ,category:"Electricity",status: "Active" },
+      { user: users[2]._id, subject: "Road damaged", description: "The road near market is broken.",location:"Juhu,Bombay",category:"Road Maintenance", status: "Pending" }
     ]);
 
     console.log("Sample data inserted successfully!");

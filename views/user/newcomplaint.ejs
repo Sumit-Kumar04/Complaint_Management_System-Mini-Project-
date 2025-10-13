@@ -9,7 +9,7 @@
                 <p class="text-muted mb-0">Please fill out the details below</p>
               </div>
 
-              <form action="/complaints" method="POST">
+              <form action="/user/<%=user._id%>/complaint/new" method="POST">
                 <!-- Hidden User ID -->
                 <input type="hidden" name="userId" value="<%= user._id %>" />
 

@@ -46,48 +46,60 @@
 
   <!-- Recent Complaints Table -->
   <div class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-dark text-white fw-bold">
-      Recent Complaints
-    </div>
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead class="table-light">
-            <tr>
-              <th>ID</th>
-              <th>Subject</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if (complaints.length > 0) { %>
-              <% complaints.forEach((complaint, index) => { %>
-                <tr>
-                  <td>#<%= index + 1 %></td>
-                  <td><%= complaint.subject %></td>
-                  <td>
-                    <% if (complaint.status === "Pending") { %>
-                      <span class="badge bg-warning text-dark">Pending</span>
-                    <% } else if (complaint.status === "Resolved") { %>
-                      <span class="badge bg-success">Resolved</span>
-                    <% } else { %>
-                      <span class="badge bg-primary">Active</span>
-                    <% } %>
-                  </td>
-                  <td><%= complaint.createdAt.toLocaleDateString("en-IN") %></td>
-                </tr>
-              <% }) %>
-            <% } else { %>
-              <tr>
-                <td colspan="4" class="text-center text-muted">No complaints yet</td>
+  <div class="card-header bg-dark text-white fw-bold">
+    Recent Complaints
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Subject</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (complaints.length > 0) { %>
+            <% complaints.forEach((complaint, index) => { %>
+              <!-- Main Row -->
+              <tr data-bs-toggle="collapse" data-bs-target="#collapse<%= index %>" style="cursor:pointer;">
+                <td>#<%= index + 1 %></td>
+                <td><%= complaint.subject %></td>
+                <td>
+                  <% if (complaint.status === "Pending") { %>
+                    <span class="badge bg-warning text-dark">Pending</span>
+                  <% } else if (complaint.status === "Resolved") { %>
+                    <span class="badge bg-success">Resolved</span>
+                  <% } else { %>
+                    <span class="badge bg-primary">Active</span>
+                  <% } %>
+                </td>
+                <td><%= complaint.createdAt.toLocaleDateString("en-IN") %></td>
               </tr>
-            <% } %>
-          </tbody>
-        </table>
-      </div>
+
+              <!-- Expandable Details Row -->
+              <tr class="collapse" id="collapse<%= index %>">
+                <td colspan="4" class="bg-light">
+                  <strong>Description:</strong> <%= complaint.description %><br>
+                  <strong>Category:</strong> <%= complaint.category %><br>
+                  <strong>Location:</strong> <%= complaint.location %>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="4" class="text-center text-muted">No complaints yet</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
+
+
 
   <!-- New Complaint Button -->
   <div class="text-end">
