@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Organisation = require("./organisation");
+
 
 const ComplaintSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -9,7 +11,7 @@ const ComplaintSchema = new Schema({
   category:String,
   status: { type: String, default: "Pending" }, // e.g., Pending, Active, Resolved
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Complaint", ComplaintSchema);

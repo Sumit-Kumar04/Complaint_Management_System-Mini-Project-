@@ -1,0 +1,104 @@
+<div class="container my-5">
+  <h2 class="mb-4 text-center text-primary fw-bold">Organisation Dashboard</h2>
+
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-gradient-primary text-white fw-bold">
+      All Complaints
+    </div>
+    <div class="card-body p-0 table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Subject</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% complaints.forEach((complaint, index) => { %>
+            <tr class="complaint-row" data-bs-toggle="modal" data-bs-target="#complaintModal<%= complaint._id %>" style="cursor:pointer;">
+              <td><%= index + 1 %></td>
+              <td><%= complaint.user.name %></td>
+              <td><%= complaint.subject %></td>
+              <td><%= complaint.category %></td>
+              <td><%= complaint.location %></td>
+              <td>
+                <% if (complaint.status === "Pending") { %>
+                  <span class="badge bg-warning text-dark">Pending</span>
+                <% } else if (complaint.status === "Active") { %>
+                  <span class="badge bg-primary">Active</span>
+                <% } else { %>
+                  <span class="badge bg-success">Resolved</span>
+                <% } %>
+              </td>
+              <td>
+                <form action="/organisation/complaint/<%= complaint._id %>/status" method="POST" class="d-flex gap-1">
+                  <select name="status" class="form-select form-select-sm">
+                    <option value="Pending" <%= complaint.status === "Pending" ? "selected" : "" %>>Pending</option>
+                    <option value="Active" <%= complaint.status === "Active" ? "selected" : "" %>>Active</option>
+                    <option value="Resolved" <%= complaint.status === "Resolved" ? "selected" : "" %>>Resolved</option>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-success ">Update</button>
+                </form>
+              </td>
+            </tr>
+
+            <!-- Modal for Complaint Details -->
+            <div class="modal fade" id="complaintModal<%= complaint._id %>" tabindex="-1" aria-labelledby="modalLabel<%= complaint._id %>" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalLabel<%= complaint._id %>">Complaint Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <h6><strong>User:</strong> <%= complaint.user.name %></h6>
+                    <h6><strong>Subject:</strong> <%= complaint.subject %></h6>
+                    <h6><strong>Category:</strong> <%= complaint.category %></h6>
+                    <h6><strong>Location:</strong> <%= complaint.location %></h6>
+                    <h6><strong>Status:</strong>
+                      <% if (complaint.status === "Pending") { %>
+                        <span class="badge bg-warning text-dark">Pending</span>
+                      <% } else if (complaint.status === "Active") { %>
+                        <span class="badge bg-primary">Active</span>
+                      <% } else { %>
+                        <span class="badge bg-success">Resolved</span>
+                      <% } %>
+                    </h6>
+                    <hr>
+                    <p><strong>Description:</strong> <%= complaint.description %></p>
+                  </div>
+                  <div class="modal-footer">
+                    <form action="/organisation/complaint/<%= complaint._id %>/status" method="POST" class="d-flex gap-1 w-100">
+                      <select name="status" class="form-select form-select-sm">
+                        <option value="Pending" <%= complaint.status === "Pending" ? "selected" : "" %>>Pending</option>
+                        <option value="Active" <%= complaint.status === "Active" ? "selected" : "" %>>Active</option>
+                        <option value="Resolved" <%= complaint.status === "Resolved" ? "selected" : "" %>>Resolved</option>
+                      </select>
+                      <button type="submit" class="btn btn-success">Update Status</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Optional: Add Bootstrap Gradient and Colors in <head> -->
+<style>
+  .bg-gradient-primary {
+    background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+  }
+  .table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+  }
+</style>
