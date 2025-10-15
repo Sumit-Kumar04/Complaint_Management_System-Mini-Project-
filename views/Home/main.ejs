@@ -1,0 +1,351 @@
+
+
+  <style>
+  
+    /* RESET + BASE */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;}
+    body{background: #f6f9ff; color:#111; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+
+    /* ===== HERO (full width) ===== */
+    .hero-wrap{width:100vw;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#ffffff 0%, #f3f8ff 30%);position:relative}
+    .hero-inner{max-width:1200px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:2rem;padding:6rem 4rem}
+    /* left card */
+    .hero-card{
+      background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.7));
+      border-radius:18px;padding:36px;box-shadow:0 10px 40px rgba(12,34,80,0.06);backdrop-filter:blur(6px);
+    }
+    .eyebrow{display:inline-block;background:#eaf4ff;color:#006dff;padding:6px 12px;border-radius:999px;font-weight:600;font-size:.85rem;margin-bottom:1rem}
+    .hero-title{font-size:2.6rem;font-weight:800;line-height:1.02;color:#05204a;margin-bottom:.6rem}
+    .hero-lead{color:#3b4b66;margin-bottom:1.2rem;font-size:1.05rem}
+    .cta-row .btn{border-radius:999px;padding:12px 28px;font-weight:700}
+    .cta-ghost{background:transparent;border:2px solid rgba(0,114,255,0.08);color:#06335f}
+    .stat-grid{display:flex;gap:1.25rem;margin-top:1.4rem}
+    .stat{background:#fff;border-radius:12px;padding:12px 16px;flex:1;text-align:center;box-shadow:0 6px 18px rgba(12,34,80,0.04)}
+    .stat .num{font-weight:800;color:#006dff;font-size:1.125rem}
+    .stat small{display:block;color:#7b8aa3}
+
+    /* right visual */
+    .hero-visual{display:flex;align-items:center;justify-content:center;position:relative}
+    .device{
+      width:420px;height:300px;border-radius:18px;background:linear-gradient(180deg,#ffffff,#f8fbff);box-shadow:0 30px 80px rgba(5,32,90,0.08);display:flex;flex-direction:column;overflow:hidden;
+      position:relative;padding:18px;
+      transform:rotate(-3deg);
+    }
+    .device .top{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+    .dot{width:10px;height:10px;border-radius:50%;background:#ffd;box-shadow:inset 0 0 0 2px rgba(0,0,0,0.03)}
+    .screen{flex:1;background:linear-gradient(180deg,#f6f9ff,#ffffff);border-radius:10px;padding:10px;overflow:hidden}
+    .card-mini{background:#fff;border-radius:8px;padding:10px;margin-bottom:8px;box-shadow:0 8px 18px rgba(10,30,80,0.03);display:flex;align-items:center;gap:10px}
+    .chip{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#0072ff,#00c6ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+
+    /* ===== CONTENT SECTIONS ===== */
+    section{padding:6rem 0}
+    .container-narrow{max-width:1100px;margin:0 auto;padding:0 1rem}
+
+    /* features */
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+    .feature{background:white;padding:24px;border-radius:14px;box-shadow:0 12px 30px rgba(6,36,100,0.04);transition:transform .28s ease,box-shadow .28s ease}
+    .feature:hover{transform:translateY(-8px);box-shadow:0 22px 50px rgba(6,36,100,0.08)}
+    .feature i{font-size:28px;color:#0072ff;margin-bottom:12px}
+
+    /* analytics strip */
+    .analytics{background:linear-gradient(90deg,#ffffff,#f3f8ff);border-radius:14px;padding:2rem;display:flex;gap:1.4rem;align-items:center;box-shadow:0 10px 30px rgba(6,36,100,0.03)}
+    .chart-placeholder{flex:1;height:180px;border-radius:10px;background:linear-gradient(180deg,#e8f2ff,#fff);display:flex;align-items:center;justify-content:center;color:#7a93bf;font-weight:700}
+
+    /* timeline */
+    .timeline{position:relative;padding-left:20px}
+    .timeline::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:3px;background:linear-gradient(#dfefff,#ffffff)}
+    .tl-item{position:relative;padding:12px 20px;margin-bottom:18px;background:white;border-radius:12px;box-shadow:0 8px 20px rgba(6,36,100,0.04)}
+    .tl-item::before{content:"";position:absolute;left:-22px;top:18px;width:14px;height:14px;border-radius:50%;background:#0072ff;border:4px solid #fff;box-shadow:0 3px 8px rgba(6,36,100,0.06)}
+
+    /* reviews carousel-like */
+    .review-row{display:flex;gap:1rem;overflow:auto;padding-bottom:8px}
+    .review-card{min-width:300px;background:white;border-radius:12px;padding:18px;box-shadow:0 12px 28px rgba(6,36,100,0.05)}
+
+    /* CTA strip */
+    .cta-strip{background:linear-gradient(90deg,#0072ff,#00c6ff);color:white;padding:2.25rem;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .cta-strip .btn{background:white;color:#0072ff;padding:10px 20px;border-radius:999px;font-weight:700}
+
+    /* faq */
+    .faq .card{border-radius:12px;overflow:hidden}
+    .faq .btn{width:100%;text-align:left;font-weight:600;color:#0b3a82}
+
+    /* small screens */
+    @media (max-width:991px){
+      .hero-inner{grid-template-columns:1fr;padding:4rem 2rem;gap:1.2rem}
+      .device{width:320px;height:240px;transform:none}
+      .features-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:576px){
+      .hero-inner{padding:3rem 1rem}
+      .features-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO (full width) -->
+  <section class="hero-wrap">
+    <div class="hero-inner" data-aos="fade-up" data-aos-duration="900">
+      <!-- LEFT -->
+      <div class="hero-card">
+        <span class="eyebrow">Settler • Transparent</span>
+        <h1 class="hero-title">Resolve civic complaints quickly with transparency</h1>
+        <p class="hero-lead">File complaints, track progress in real-time, and get data-backed resolution — a single platform for citizens and authorities.</p>
+
+        <div class="d-flex gap-3 cta-row">
+          <a href="/complaints/new" class="btn btn-primary">Raise a Complaint</a>
+   
+        </div>
+
+        <div class="stat-grid mt-4">
+          <div class="stat">
+            <div class="num">12k+</div>
+            <small>Complaints Filed</small>
+          </div>
+          <div class="stat">
+            <div class="num">86%</div>
+            <small>Resolved Rate</small>
+          </div>
+          <div class="stat">
+            <div class="num">200+</div>
+            <small>Verified Officials</small>
+          </div>
+        </div>
+
+        <div class="mt-4" data-aos="fade-left" data-aos-delay="200">
+          <small style="color:#607296">Trusted in multiple cities • GDPR-aware • Secure</small>
+        </div>
+      </div>
+
+      <!-- RIGHT (device mockup) -->
+      <div class="hero-visual" data-aos="zoom-in" data-aos-delay="200">
+        <div class="device" role="img" aria-label="app preview">
+          <div class="top">
+            <div class="dot" style="background:#ff6b6b"></div>
+            <div class="dot" style="background:#ffd166"></div>
+            <div class="dot" style="background:#6bcBff"></div>
+          </div>
+
+          <div class="screen">
+            <div class="card-mini">
+              <div class="chip">C</div>
+              <div>
+                <div style="font-weight:700;color:#0b2a66">Complaint #1276</div>
+                <small style="color:#6f7b99">Water logging in sector 9</small>
+              </div>
+              <div style="margin-left:auto;font-weight:700;color:#12b886">Open</div>
+            </div>
+
+            <div class="card-mini">
+              <div class="chip">A</div>
+              <div>
+                <div style="font-weight:700;color:#0b2a66">Complaint #1289</div>
+                <small style="color:#6f7b99">Broken street light</small>
+              </div>
+              <div style="margin-left:auto;font-weight:700;color:#0b2a66">Resolved</div>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;background:linear-gradient(90deg,#0072ff,#00c6ff);height:44px;border-radius:8px;color:white;display:flex;align-items:center;justify-content:center;font-weight:700">Track</div>
+              <div style="width:44px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center">⋯</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="container-narrow" data-aos="fade-up">
+    <div style="text-align:center;margin-bottom:2rem">
+      <h2 style="font-weight:800;color:#05204a">All the tools you need</h2>
+      <p style="color:#5e6b86;max-width:820px;margin:0 auto">From filing to analytics, Settler gives citizens and admins a single dashboard to manage complaints and measure impact.</p>
+    </div>
+
+    <div class="features-grid" data-aos="fade-up" data-aos-delay="120">
+      <div class="feature">
+        <i class="ri-file-list-3-line"></i>
+        <h5 style="margin-bottom:8px">Simple Filing</h5>
+        <p style="color:#6b7a98">Forms with attachments, location picker and categories to make filing precise.</p>
+      </div>
+      <div class="feature">
+        <i class="ri-timer-2-line"></i>
+        <h5 style="margin-bottom:8px">SLA & Escalation</h5>
+        <p style="color:#6b7a98">Set SLAs, get escalations and automate reminders for faster resolution.</p>
+      </div>
+      <div class="feature">
+        <i class="ri-shield-check-line"></i>
+        <h5 style="margin-bottom:8px">Verified Authorities</h5>
+        <p style="color:#6b7a98">Map complaints to verified departments and officers for accountability.</p>
+      </div>
+      <div class="feature">
+        <i class="ri-bar-chart-box-line"></i>
+        <h5 style="margin-bottom:8px">Analytics</h5>
+        <p style="color:#6b7a98">Visual dashboards for admins: trends, hotspots, response time and resolution rates.</p>
+      </div>
+      <div class="feature">
+        <i class="ri-global-line"></i>
+        <h5 style="margin-bottom:8px">Multilingual</h5>
+        <p style="color:#6b7a98">Support for regional languages to reach all citizens.</p>
+      </div>
+      <div class="feature">
+        <i class="ri-star-smile-line"></i>
+        <h5 style="margin-bottom:8px">User Ratings</h5>
+        <p style="color:#6b7a98">Get feedback on service and improve accountability with ratings.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Analytics + Timeline -->
+  <section class="container-narrow mt-2" data-aos="fade-up" data-aos-delay="120">
+    <div class="d-flex flex-column gap-4">
+      <div class="analytics">
+        <div style="flex:1">
+          <h5 style="margin:0 0 .5rem 0;color:#0b2a66">Live Analytics</h5>
+          <p style="color:#6b7a98;margin-bottom:1rem">Overview of complaints, resolution times and trending locations.</p>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;background:white;padding:14px;border-radius:10px;box-shadow:0 8px 20px rgba(6,36,100,0.03)">
+              <div style="font-weight:800;color:#006dff">24k</div>
+              <small style="color:#7b8aa3">Total Complaints</small>
+            </div>
+            <div style="flex:1;background:white;padding:14px;border-radius:10px;box-shadow:0 8px 20px rgba(6,36,100,0.03)">
+              <div style="font-weight:800;color:#12b886">18k</div>
+              <small style="color:#7b8aa3">Resolved</small>
+            </div>
+            <div style="flex:1;background:white;padding:14px;border-radius:10px;box-shadow:0 8px 20px rgba(6,36,100,0.03)">
+              <div style="font-weight:800;color:#f6a623">2d 4h</div>
+              <small style="color:#7b8aa3">Avg Resolution</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-placeholder" aria-hidden="true">[Chart Preview]</div>
+      </div>
+
+      <div>
+        <h4 style="color:#05204a">How a complaint flows</h4>
+        <p style="color:#6b7a98;margin-bottom:1rem">From submission to closure — everything tracked with timestamps and ownership.</p>
+
+        <div class="timeline">
+          <div class="tl-item" data-aos="fade-right">
+            <strong>Submitted</strong>
+            <div style="color:#6b7a98">User files complaint with photos and location.</div>
+          </div>
+          <div class="tl-item" data-aos="fade-right" data-aos-delay="120">
+            <strong>Assigned</strong>
+            <div style="color:#6b7a98">The complaint is assigned to the concerned department / official.</div>
+          </div>
+          <div class="tl-item" data-aos="fade-right" data-aos-delay="240">
+            <strong>Action Taken</strong>
+            <div style="color:#6b7a98">Field team updates progress; user receives updates.</div>
+          </div>
+          <div class="tl-item" data-aos="fade-right" data-aos-delay="360">
+            <strong>Closed</strong>
+            <div style="color:#6b7a98">Resolution confirmed and user feedback recorded.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="container-narrow" data-aos="fade-up">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <h3 style="margin:0;color:#05204a">What users say</h3>
+      <small style="color:#6b7a98">Real reviews from citizens</small>
+    </div>
+
+    <div class="review-row" data-aos="fade-up" data-aos-delay="80">
+      <div class="review-card">
+        <strong>Priya S.</strong>
+        <p style="color:#5e6b86">“I filed a complaint about overflowing drains. Got an update and resolution within 48 hours.”</p>
+        <div style="color:#f1c40f">★★★★★</div>
+      </div>
+
+      <div class="review-card">
+        <strong>Rohit M.</strong>
+        <p style="color:#5e6b86">“Track feature kept me informed. Officials were responsive.”</p>
+        <div style="color:#f1c40f">★★★★★</div>
+      </div>
+
+      <div class="review-card">
+        <strong>Anita K.</strong>
+        <p style="color:#5e6b86">“App is simple and works well for senior citizens too.”</p>
+        <div style="color:#f1c40f">★★★★☆</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="container-narrow" data-aos="zoom-in">
+    <div class="cta-strip" style="margin-top:2rem">
+      <div>
+        <h4 style="margin:0">Ready to simplify civic complaints?</h4>
+        <p style="margin:0;color:rgba(255,255,255,0.9)">Start now — file a complaint or invite your municipality to onboard.</p>
+      </div>
+      <div>
+        <a href="/complaints/new" class="btn">Raise Complaint</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ + Contact -->
+  <section class="container-narrow mt-3" data-aos="fade-up" style="padding-bottom:5rem">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <h4 style="color:#05204a">Frequently Asked</h4>
+        <div class="faq mt-3">
+          <div class="card mb-2">
+            <div class="card-body p-2">
+              <button class="btn" data-bs-toggle="collapse" data-bs-target="#f1">How long does resolution take?</button>
+              <div id="f1" class="collapse">Resolution time depends on department; average shown in analytics.</div>
+            </div>
+          </div>
+
+          <div class="card mb-2">
+            <div class="card-body p-2">
+              <button class="btn" data-bs-toggle="collapse" data-bs-target="#f2">Can I attach photos?</button>
+              <div id="f2" class="collapse">Yes — attach images and location for faster resolution.</div>
+            </div>
+          </div>
+
+          <div class="card mb-2">
+            <div class="card-body p-2">
+              <button class="btn" data-bs-toggle="collapse" data-bs-target="#f3">Is my data secure?</button>
+              <div id="f3" class="collapse">We use standard security practices and data controls.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 d-flex justify-content-center">
+  <div class="card p-4 mb-3" style="width:100%; max-width:400px; border:1px solid #d0e4ff; border-radius:12px;" data-aos="fade-up">
+    <h4 class="mb-3" style="color:#05204a; text-align:center;">Settler Demo Request</h4>
+    <p style="color:#6b7a98; text-align:center;">Want a demo for your organisation? Fill a quick form and we'll contact you.</p>
+
+    <form action="/contact" method="POST" class="mt-3">
+      <div class="mb-2"><input class="form-control" name="name" placeholder="Name" required></div>
+      <div class="mb-2"><input class="form-control" name="email" placeholder="Email" required></div>
+      <div class="mb-2"><input class="form-control" name="org" placeholder="Organisation (optional)"></div>
+      <div><button class="btn btn-primary w-100">Request Demo</button></div>
+    </form>
+  </div>
+</div>
+
+    
+  </section>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({duration:800,offset:120,once:true});
+    // optional: horizontal scroll for review row on wheel (nice UX)
+    const reviewRow = document.querySelector('.review-row');
+    if(reviewRow){
+      reviewRow.addEventListener('wheel', (e)=>{ e.preventDefault(); reviewRow.scrollLeft += e.deltaY; });
+    }
+  </script>
+</body>
+

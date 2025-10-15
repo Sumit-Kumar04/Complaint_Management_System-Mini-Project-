@@ -51,8 +51,8 @@ app.get("/user/dashboard/:id", async (req, res) => {
   } });
 });
 //home route
-app.get("/", (req, res) => {
-  res.send("home");
+app.get("/home/main", (req, res) => {
+  res.render("Home/main");
 });
 //edit profile route
 app.get("/user/:id/edit", wrapAsync(async (req, res) => {
