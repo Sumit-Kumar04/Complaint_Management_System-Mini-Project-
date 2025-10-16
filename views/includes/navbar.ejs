@@ -1,13 +1,41 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(120deg, #0072ff, #00c6ff);">
   <div class="container-fluid">
-    <a class="navbar-brand fw-bold" href="#">Settler</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <!-- Logo / Brand -->
+    <a class="navbar-brand fw-bold fs-4" href="/home/main">
+      <i class="bi bi-shield-check me-2"></i> Settler
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link " href="/home/main">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+
+        <% if (user) { %>
+          <!-- Show when logged in -->
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-light text-primary fw-semibold px-3" href="/user/logout">Logout</a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-outline-light fw-semibold px-3" href="/user/dashboard/<%= user._id %>">Dashboard</a>
+          </li>
+        <% } else { %>
+          <!-- Show when not logged in -->
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-light text-primary fw-semibold px-3" href="/user/login">Login</a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-outline-light fw-semibold px-3" href="/user/signup">Register</a>
+          </li>
+        <% } %>
       </ul>
     </div>
   </div>

@@ -69,6 +69,16 @@
                     <option value="Others">Others</option>
                   </select>
                 </div>
+                  <!-- Organisation -->
+                  <div class="mb-3">
+                    <label for="organisation" class="form-label fw-semibold">Organisation</label>
+                    <select class="form-select" id="organisation" name="organisation" required>
+                      <option value="">-- Select Organisation --</option>
+                      <% organisations.forEach(function(org) { %>
+                        <option value="<%= org._id %>"><%= org.name %> - <%= org.location %></option>
+                      <% }) %>
+                    </select>
+                  </div>
 
                 <!-- Submit -->
                 <div class="d-grid mt-4">
