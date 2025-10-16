@@ -1,10 +1,16 @@
 body {
       background-color: #f8f9fa;
       overflow-x: hidden;
+<<<<<<< HEAD
      
     }
      
 .card{
+=======
+    }
+     
+    .card {
+>>>>>>> a8ef4cbf3021ec50588bb3036ff1bb21705545ce
       border: none;
       border-radius: 16px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
