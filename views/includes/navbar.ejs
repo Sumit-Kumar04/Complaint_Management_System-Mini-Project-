@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(120deg, #0072ff, #00c6ff);">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(120deg, #0072ff, #00c6ff);">
   <div class="container-fluid">
     <!-- Logo / Brand -->
     <a class="navbar-brand fw-bold fs-4" href="/home/main">
@@ -14,27 +14,40 @@
     <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item"><a class="nav-link " href="/home/main">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="/home/main">Home</a></li>
+       
+        <li class="nav-item"><a class="nav-link" href="/home/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/home/main/#contact-section">Contact</a></li>
 
         <% if (user) { %>
-          <!-- Show when logged in -->
+          <!-- Logged in as User -->
           <li class="nav-item ms-lg-3">
             <a class="btn btn-light text-primary fw-semibold px-3" href="/user/logout">Logout</a>
           </li>
           <li class="nav-item ms-2">
             <a class="btn btn-outline-light fw-semibold px-3" href="/user/dashboard/<%= user._id %>">Dashboard</a>
           </li>
+
+        <% } else if (organisation) { %>
+          <!-- Logged in as Organisation -->
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-light text-primary fw-semibold px-3" href="/organisation/logout">Logout</a>
+          </li>
+           <li class="nav-item ms-2">
+    <a class="btn btn-outline-light fw-semibold px-3" href="/organisation/dashboard/<%= organisation._id %>">Dashboard</a>
+  </li>
+         
+
         <% } else { %>
-          <!-- Show when not logged in -->
+          <!-- Not logged in -->
           <li class="nav-item ms-lg-3">
             <a class="btn btn-light text-primary fw-semibold px-3" href="/user/login">Login</a>
           </li>
+         
           <li class="nav-item ms-2">
             <a class="btn btn-outline-light fw-semibold px-3" href="/user/signup">Register</a>
           </li>
+         
         <% } %>
       </ul>
     </div>

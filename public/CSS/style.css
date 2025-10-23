@@ -1,16 +1,17 @@
 body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
       background-color: #f8f9fa;
       overflow-x: hidden;
-<<<<<<< HEAD
+
      
     }
      
-.card{
-=======
-    }
+
      
     .card {
->>>>>>> a8ef4cbf3021ec50588bb3036ff1bb21705545ce
+
       border: none;
       border-radius: 16px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -18,4 +19,62 @@ body {
 .navbar {
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
+    body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Make sure content takes remaining height */
+main {
+  flex: 1;
+}
+ footer {
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: linear-gradient(120deg, #0072ff, #00c6ff);
+  color: white;
+  text-align: center;
+}
+   html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+}
+
+main {
+  flex: 1;
+}
+
+/* Navbar shadow */
+.navbar {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Card style */
+.card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Footer style */
+footer {
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: linear-gradient(120deg, #0072ff, #00c6ff);
+  color: white;
+  text-align: center;
+}
+
    

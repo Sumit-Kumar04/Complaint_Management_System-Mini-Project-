@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -14,18 +16,15 @@ const session = require("express-session");
 app.use(methodOverride("_method"));
 const {isLoggedIn}=require("./middlewares/middleware");
 const flash = require("connect-flash");
+const transporter = require('./utils/mailer');
+const MONGO_URI = process.env.MONGO_URI;
 
-const MONGO_URL='mongodb://127.0.0.1:27017/settler';
-main()
-  .then(()=>{
-    console.log("Connected to MongoDB");
-  })
-  .catch((err)=>{
-    console.log("Error connecting to MongoDB:", err);
-  });
-async function main(){
-  await mongoose.connect(MONGO_URL)
-};
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("Connected to MongoDB"))
+.catch((err) => console.log("Error connecting to MongoDB:", err));
 
 // Session setup
 app.use(session({
@@ -41,11 +40,14 @@ app.use(passport.session());
 app.use(flash());
 
 app.use((req, res, next) => {
-  res.locals.user = req.user; // current logged-in user
+  // Check which model is logged in
+  res.locals.user = req.user instanceof User ? req.user : null;
+  res.locals.organisation = req.user instanceof Organisation ? req.user : null;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
 });
+
 
 // Local Strategy
 passport.use(new LocalStrategy({ usernameField: 'phone' }, async (phone, password, done) => {
@@ -63,25 +65,23 @@ passport.use(new LocalStrategy({ usernameField: 'phone' }, async (phone, passwor
 }));
 
 // Serialize & Deserialize
-passport.serializeUser((user, done) => done(null, user.id));
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});
+// passport.serializeUser((user, done) => done(null, user.id));
+// passport.deserializeUser(async (id, done) => {
+//   try {
+//     const user = await User.findById(id);
+//     done(null, user);
+//   } catch (err) {
+//     done(err);
+//   }
+// });
+
 
 // Middleware
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(expressLayouts);
-app.use((req, res, next) => {
-  res.locals.user = req.user;
-  next();
-});
+
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -109,6 +109,53 @@ app.post("/user/login", (req, res, next) => {
     });
   })(req, res, next);
 });
+
+passport.use("organisation-local", new LocalStrategy({
+  usernameField: "email",  // organisation logs in with email
+  passwordField: "password"
+}, async (email, password, done) => {
+  try {
+    const organisation = await Organisation.findOne({ email });
+
+    if (!organisation) {
+      return done(null, false, { message: "No organisation found with this email" });
+    }
+
+    // ⚠️ If you haven't hashed passwords yet:
+    if (organisation.password !== password) {
+      return done(null, false, { message: "Incorrect password" });
+    }
+
+    // If using bcrypt for hashed passwords, replace the line above with:
+    // const isMatch = await bcrypt.compare(password, organisation.password);
+    // if (!isMatch) return done(null, false, { message: "Incorrect password" });
+
+    return done(null, organisation);
+  } catch (err) {
+    return done(err);
+  }
+}));
+
+// Serialize: works for both users and organisations
+passport.serializeUser((entity, done) => done(null, { id: entity.id, type: entity instanceof User ? 'User' : 'Organisation' }));
+
+// Deserialize: detects which model to load
+passport.deserializeUser(async (obj, done) => {
+  try {
+    if (obj.type === 'User') {
+      const user = await User.findById(obj.id);
+      return done(null, user);
+    } else if (obj.type === 'Organisation') {
+      const organisation = await Organisation.findById(obj.id);
+      return done(null, organisation);
+    } else {
+      return done(null, false);
+    }
+  } catch (err) {
+    done(err);
+  }
+});
+
 
 
 //singup User route
@@ -144,6 +191,60 @@ app.get("/user/logout", (req, res, next) => {
   });
 });
 
+
+// Organisation login page
+app.get("/organisation/login", (req, res) => {
+  res.render("organisation/login");
+});
+
+// POST route to login organisation
+app.post("/organisation/login", (req, res, next) => {
+  passport.authenticate("organisation-local", (err, organisation, info) => {
+    if (err) return next(err);
+    if (!organisation) {
+      req.flash("error", info.message || "Invalid email or password");
+      return res.redirect("/organisation/login");
+    }
+
+    req.logIn(organisation, (err) => {
+      if (err) return next(err);
+      req.flash("success", `Welcome back, ${organisation.name}!`);
+      return res.redirect(`/organisation/dashboard/${organisation._id}`);
+    });
+  })(req, res, next);
+});
+
+// Organisation signup page
+app.get("/organisation/signup", (req, res) => {
+  res.render("organisation/signup");
+});
+
+// POST route to register new organisation
+app.post("/organisation/signup", wrapAsync(async (req, res, next) => {
+  const { name, email, location, password } = req.body;
+  const newOrganisation = new Organisation({ name, email, location, password });
+  await newOrganisation.save();
+
+  // Auto-login after signup
+  req.login(newOrganisation, err => {
+    if (err) return next(err);
+
+    req.flash('success', `Welcome, ${newOrganisation.name}! Organisation registered successfully.`);
+    res.redirect(`/organisation/dashboard/${newOrganisation._id}`);
+  });
+}));
+
+// Organisation logout
+app.get("/organisation/logout", (req, res, next) => {
+  req.logout(err => {
+    if (err) return next(err);
+    req.flash("success", "Organisation logged out successfully");
+    res.redirect("/organisation/login");
+  });
+});
+
+
+    
 // Dashboard Route
 app.get("/user/dashboard/:id", isLoggedIn,async (req, res) => {
   const userId = req.params.id;
@@ -211,9 +312,10 @@ app.get("/user/:id/complaint/new", wrapAsync(async (req, res) => {
 app.post("/user/:id/complaint/new",wrapAsync(async(req,res)=>{
   const userId=req.params.id;
   
-  const {subject, description, location, category } = req.body;
+  const {subject, description, location, category,organisation } = req.body;
   const newComplaint = new Complaint({
     user: userId,
+    organisation,
     subject,
     description,
     location,
@@ -228,11 +330,10 @@ app.post("/user/:id/complaint/new",wrapAsync(async(req,res)=>{
 //route for organisation dashboard
 app.get("/organisation/dashboard/:id", wrapAsync(async (req, res) => {
   const orgId = req.params.id;
-    const complaints = await Complaint.find({})
+    const organisation = await Organisation.findById(orgId);
+    const complaints = await Complaint.find({organisation: orgId})
       .populate("user", "name phone")
-      
-
-    res.render("organisation/dashboard", { complaints, orgId });
+      res.render("organisation/dashboard", { complaints,organisation });
 }));
 
 //post route to update complaint status
@@ -247,6 +348,43 @@ app.post("/organisation/complaint/:id/status",wrapAsync( async (req, res) => {
 
     res.redirect(`/organisation/dashboard/${complaint.organisation}`);
 })); 
+
+//About sectiopn
+app.get("/home/about", (req, res) => {
+  res.render("Home/about");
+});
+
+//Nodemailer
+
+
+app.post("/contact", async (req, res) => {
+  try {
+    const { name, email, org } = req.body;
+
+    const mailOptions = {
+      from: `"Settler Demo" <${process.env.EMAIL_USER}>`,
+      to: "sumitkumar963321@gmail.com", // your admin/receiver email
+      subject: "New Demo Request",
+      html: `
+        <h3>New Demo Request Submitted</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Organisation:</strong> ${org || "N/A"}</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    req.flash("success", "Demo request sent successfully!");
+    res.redirect("/home/main#connect");  // back to contact section
+
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Something went wrong. Please try again later.");
+    res.redirect("/home/main#connect");
+  }
+});
+
 
 
 //Error handling
@@ -263,6 +401,7 @@ app.use((err, req, res, next) => {
 // });
 
 // Start server
-app.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
   console.log("Server listening on port 3000");
 });
