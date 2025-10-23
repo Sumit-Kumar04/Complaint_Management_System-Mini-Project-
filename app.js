@@ -88,6 +88,9 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.set("layout", "./layouts/boilerplate");
 app.use(express.static(path.join(__dirname, "public")));
+app.get('/', (req, res) => {
+  res.redirect('/home/main');
+});
 
 //login User route
 app.get("/user/login", (req, res) => {
