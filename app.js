@@ -18,6 +18,7 @@ const {isLoggedIn}=require("./middlewares/middleware");
 const flash = require("connect-flash");
 const transporter = require('./utils/mailer');
 const MONGO_URI = process.env.MONGO_URI;
+const bcrypt = require("bcrypt");
 
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
@@ -118,22 +119,18 @@ passport.use("organisation-local", new LocalStrategy({
   passwordField: "password"
 }, async (email, password, done) => {
   try {
-    const organisation = await Organisation.findOne({ email });
+    const org= await Organisation.findOne({ email });
 
-    if (!organisation) {
+    if (!org) {
       return done(null, false, { message: "No organisation found with this email" });
     }
 
-    // ⚠️ If you haven't hashed passwords yet:
-    if (organisation.password !== password) {
-      return done(null, false, { message: "Incorrect password" });
-    }
 
     // If using bcrypt for hashed passwords, replace the line above with:
-    // const isMatch = await bcrypt.compare(password, organisation.password);
-    // if (!isMatch) return done(null, false, { message: "Incorrect password" });
+    const isMatch = await bcrypt.compare(password, org.password);
+    if (!isMatch) return done(null, false, { message: "Incorrect password" });
 
-    return done(null, organisation);
+    return done(null, org);
   } catch (err) {
     return done(err);
   }
@@ -406,5 +403,5 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log("Server listening on port 3000");
+  console.log(`Server listening on port ${PORT}`);
 });
